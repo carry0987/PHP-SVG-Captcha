@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>PHP-SVGCaptcha</title>
+    <style>
+    #select-container {
+        padding-bottom: 20px;
+    }
+    </style>
+    <script src="js/jquery-3.4.0.min.js"></script>
+</head>
+
+<body>
+    <h2>PHP SVGCaptcha - Select a captcha with different difficulty level</h2>
+    <div id="select-container">
+        <select id="captcha_select" name="captcha_difficulty">
+            <option selected="selected" disabled="disabled" hidden="hidden">Select</option>
+            <option value="easy">Easy captcha</option>
+            <option value="medium">Medium captcha</option>
+            <option value="hard">Hard captcha</option>
+        </select>
+    </div>
+    <div id="svg_captcha"></div>
+    <div id="error"></div>
+    <script>
+    $(document).ready(function() {
+        $("#captcha_select").change(function() {
+            $("select option:selected").each(function() {
+                var selected = { svgcaptcha_difficulty: $(this).attr("value") };
+                console.log(selected);
+                $("#svg_captcha").load('getCaptcha.php', selected, function(response, status, xhr) {
+                    if (status == 'error') {
+                        var msg = 'Sorry but there was an error: <br>';
+                        $("#error").html(msg + xhr.status + " " + xhr.statusText);
+                    }
+                });
+            });
+        });
+    });
+    </script>
+</body>
+
+</html>
