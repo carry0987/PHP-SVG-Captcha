@@ -1,4 +1,8 @@
 <?php
+namespace carry0987\captcha;
+
+use carry0987\captcha\Point as Point;
+
 class SVGCaptcha
 {
     private static $instance = NULL;
@@ -7,21 +11,19 @@ class SVGCaptcha
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
     "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 
-<svg 
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   width="{{width}}"
-   height="{{height}}"
-   id="svgCaptcha"
-   version="1.1"
-   style="border:solid 2px #000">
-  <title>SVGCaptcha</title>
-  <g>
+<svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg"
+    width="{{width}}"
+    height="{{height}}"
+    id="svgCaptcha"
+    version="1.1"
+    style="border:solid 2px #000">
+    itle>SVGCaptcha</title>
+    <g>
     <path
-       style="fill:none;stroke:#000000;stroke-width:2px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
-       d="{{pathdata}}"
-       id="captcha" />
-  </g>
+        style="fill:none;stroke:#000000;stroke-width:2px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
+        d="{{pathdata}}"
+        id="captcha" />
+    </g>
 </svg>
 EOD;
     // The glyph outline data
@@ -276,7 +278,7 @@ EOD;
      * This function replaces all parameters in the SVG skeleton with the computed
      * values and finally returns the SVG string.
      * 
-     * @param str $path_str The string holding the path data for the path d attribute.
+     * @param $path_str The string holding the path data for the path d attribute.
      * @return array An array of the captcha answer and the svg output for the captcha image.
      */
     private function _write_SVG($path_str) {
@@ -286,7 +288,7 @@ EOD;
         /* Update the d path attribute */
         $svg_output = str_replace("{{pathdata}}", $path_str, $svg_output);
 
-        return array(implode($this->captcha_answer, ''), $svg_output);
+        return array(implode('', $this->captcha_answer), $svg_output);
     }
 
     /**
@@ -323,7 +325,7 @@ EOD;
             if (count($shape_keys) > 0 && !empty($shape_keys)) {
                 $pos = (($rel = $glyphs[$key]['glyph_data'][$shape_keys[0]][0]->x) > $this->width / 2) ? false : true;
                 $x_translate = ($pos) ? secure_rand(abs($rel), $this->width) : - secure_rand(0, abs($rel));
-                $y_translate = ((float)microtime() & 1) ? - secure_rand(0, $this->width / 5) : secure_rand(0, $this->width / 5);
+                $y_translate = ((int) microtime() & 1) ? - secure_rand(0, round($this->width / 5)) : secure_rand(0, round($this->width / 5));
                 $a = $this->_ra(0.6);
                 foreach ($shape_keys as $skey) {
                     $copy = array_copy($glyphs[$key]['glyph_data'][$skey]);
@@ -786,7 +788,7 @@ EOD;
      */
     private function _shear($p, $mh = 1, $mv = 0) {
         if ($mh * $mv != 0) {
-            throw new InvalidArgumentException(__FUNCTION__.' _shear called with invalid arguments '.$p.' mh: '.$mh.' mv: '.$mv);
+            throw new \InvalidArgumentException(__FUNCTION__.' _shear called with invalid arguments '.$p.' mh: '.$mh.' mv: '.$mv);
         }
         $x = $p->x;
         $y = $p->y;
@@ -815,7 +817,7 @@ EOD;
      */
     private function _approximate_line($line) {
         if (count($line) != 2 || !($line[0] instanceof Point) || !($line[1] instanceof Point)) {
-            throw new InvalidArgumentException(__FUNCTION__.': Argument is not an array of two points');
+            throw new \InvalidArgumentException(__FUNCTION__.': Argument is not an array of two points');
         } elseif ($line[0]->_equals($line[1])) {
         }
         // First choose the target curve
@@ -874,7 +876,7 @@ EOD;
         // Check that we deal with Point arrays only.
         foreach ($curve as $point) {
             if (get_class($point) != Point::class)
-                throw new InvalidArgumentException('Curve is not an array of points');
+                throw new \InvalidArgumentException('Curve is not an array of points');
         }
         if (!$nlines || !isset($nlines)) {
             $nlines = secure_rand(min($this->dsettings['approx_shapes']['r_al_num_lines']), max($this->dsettings['approx_shapes']['r_al_num_lines']));
@@ -917,7 +919,7 @@ EOD;
                 return $lines;
             };
         } else {
-            throw new InvalidArgumentException('Can only approx. 3/4th degree curves');
+            throw new \InvalidArgumentException('Can only approx. 3/4th degree curves');
         }
         return $approx_func($curve, $nlines);
     }
@@ -935,7 +937,7 @@ EOD;
         // Check that we deal with Point arrays only.
         foreach ($curve as $point) {
             if (get_class($point) != Point::class)
-                throw new InvalidArgumentException('Curve is not an array of points');
+                throw new \InvalidArgumentException('Curve is not an array of points');
         }
 
         if (count($curve) == 1) {
@@ -971,7 +973,7 @@ EOD;
 
 function secure_rand($start, $stop, &$secure = 'true', $calls = 0) {
     if ($start < 0 || $stop < 0 || $stop < $start) {
-        throw new InvalidArgumentException('Either stop<start or negative input parameters. Arguments: start='.$start.', stop='.$stop);
+        throw new \InvalidArgumentException('Either stop<start or negative input parameters. Arguments: start='.$start.', stop='.$stop);
     }
     static $LUT; // Lookup table that holds always the last bytes as received by openssl_random_pseudo_bytes.
     static $last_lu;
@@ -1006,13 +1008,13 @@ function secure_rand($start, $stop, &$secure = 'true', $calls = 0) {
     $binary = openssl_random_pseudo_bytes($num_bytes, $crypto_strong);
 
     if ($crypto_strong == false) {
-        throw new UnexpectedValueException('openssl_random_bytes cannot access secure PRNG');
+        throw new \UnexpectedValueException('openssl_random_bytes cannot access secure PRNG');
     }
 
     /* unpack data into previously determined format */
     $data = unpack($format.'*', $binary);
     if ($data == false) {
-        throw new ErrorException('unpack() failed');
+        throw new \ErrorException('unpack() failed');
     }
 
     //Update lookup-table
@@ -1046,7 +1048,7 @@ function secure_rand($start, $stop, &$secure = 'true', $calls = 0) {
  */
 function array_secure_rand($input, $num_el = 1, $allow_duplicates = false) {
     if ($num_el > count($input)) {
-        throw new InvalidArgumentException('Cannot choose more random keys from input that are in the array: input_size: '.count($input).' and num_to_pick'.$num_el);
+        throw new \InvalidArgumentException('Cannot choose more random keys from input that are in the array: input_size: '.count($input).' and num_to_pick'.$num_el);
     }
     $keys = array_keys($input);
     $chosen_keys = array();

@@ -1,4 +1,6 @@
 <?php
+namespace carry0987\captcha;
+
 $alphabet = array(
 	'y' => array(
 		'width' => 347,

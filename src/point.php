@@ -1,4 +1,6 @@
 <?php
+namespace carry0987\captcha;
+
 class Point
 {
     public $x;

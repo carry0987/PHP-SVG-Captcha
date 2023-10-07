@@ -1,5 +1,7 @@
 <?php
-include 'class/SVGCaptcha.php';
+require dirname(__DIR__).'/vendor/autoload.php';
+
+use carry0987\captcha\SVGCaptcha as SVGCaptcha;
 
 if (isset($_POST['svgcaptcha_difficulty']) && !empty($_POST['svgcaptcha_difficulty'])) {
     $obj = null; 
