@@ -1,7 +1,7 @@
 <?php
-namespace carry0987\captcha;
+namespace carry0987\Captcha;
 
-use carry0987\captcha\Point as Point;
+use carry0987\Captcha\Point as Point;
 
 class SVGCaptcha
 {

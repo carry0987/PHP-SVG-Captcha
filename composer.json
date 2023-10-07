@@ -11,7 +11,7 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "carry0987\\captcha\\": "src/"
+            "carry0987\\Captcha\\": "src/"
         }
     },
     "authors": [

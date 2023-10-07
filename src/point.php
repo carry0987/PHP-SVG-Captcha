@@ -1,5 +1,5 @@
 <?php
-namespace carry0987\captcha;
+namespace carry0987\Captcha;
 
 class Point
 {
