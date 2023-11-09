@@ -1,7 +1,8 @@
 <?php
 namespace carry0987\Captcha;
 
-use carry0987\Captcha\Point as Point;
+use carry0987\Captcha\Utils\Glyphs as Glyphs;
+use carry0987\Captcha\Utils\Point as Point;
 
 class SVGCaptcha
 {
@@ -88,9 +89,8 @@ EOD;
      *                          array, the array is assumed to be a complete dsettings array and can be directly copied!
      */
     private function __construct($numchars, $width, $height, $difficulty) {
-        include 'point.php';
-        include 'glyphs.php';
-        $this->alphabet = $alphabet;
+        $this->alphabet = new Glyphs;
+        $this->alphabet = $this->alphabet->getGlyphs();
         $this->numchars = ($numchars > count($this->alphabet) ? count($this->alphabet) : $numchars);
         $this->width = $width;
         $this->height = $height;
