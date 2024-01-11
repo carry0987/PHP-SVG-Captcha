@@ -153,7 +153,7 @@ EOD;
      * 
      * @return bool True if the submitted captcha code matches the generated one, false otherwise.
      */
-    public function checkCaptcha(string $captcha_code, string $submit_code)
+    public static function checkCaptcha(string $captcha_code, string $submit_code)
     {
         $check_result = strcasecmp($captcha_code, $submit_code);
 
