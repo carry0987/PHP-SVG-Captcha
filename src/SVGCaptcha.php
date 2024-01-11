@@ -72,7 +72,7 @@ EOD;
      * @param int $difficulty The difficulty of the captcha to generate. Bigger values tend to decrease the performance.
      * @return SVGCaptcha An unique instance of this class.
      */
-    public static function getInstance($numchars, $width, $height, $difficulty = SVGCaptcha::MEDIUM) {
+    public static function getInstance(int $numchars, int $width, int $height, int $difficulty = SVGCaptcha::MEDIUM) {
         if (!isset(self::$instance))
             self::$instance = new SVGCaptcha($numchars, $width, $height, $difficulty);
 
@@ -146,6 +146,18 @@ EOD;
         } elseif (is_array($difficulty) && !empty($difficulty) && (!array_diff_key($difficulty, $this->dsettings))) {
             $this->dsettings = $difficulty;
         }
+    }
+
+    /**
+     * Checks whether the submitted captcha code matches the generated one.
+     * 
+     * @return bool True if the submitted captcha code matches the generated one, false otherwise.
+     */
+    public function checkCaptcha(string $captcha_code, string $submit_code)
+    {
+        $check_result = strcasecmp($captcha_code, $submit_code);
+
+        return $check_result === 0;
     }
 
     /**

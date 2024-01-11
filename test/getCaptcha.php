@@ -11,21 +11,21 @@ if (isset($_POST['svgcaptcha_difficulty']) && !empty($_POST['svgcaptcha_difficul
             $c = $obj->getSVGCaptcha();
             echo $c[1];
             //Answer
-            //echo $c[0];
+            //$obj->checkCaptcha($c[0]);
             break;
         case 'medium':
             $obj = SVGCaptcha::getInstance(4, $width = 300, $height = 130, $difficulty = SVGCaptcha::MEDIUM);
             $c = $obj->getSVGCaptcha();
             echo $c[1];
             //Answer
-            //echo $c[0];
+            //$obj->checkCaptcha($c[0]);
             break;
         case 'hard':
             $obj = SVGCaptcha::getInstance(4, $width = 300, $height = 130, $difficulty = SVGCaptcha::HARD);
             $c = $obj->getSVGCaptcha();
             echo $c[1];
             //Answer
-            //echo $c[0];
+            //$obj->checkCaptcha($c[0]);
             break;
         default:
             break;
