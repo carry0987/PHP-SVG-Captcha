@@ -18,7 +18,7 @@ class SVGCaptcha
     id="svgCaptcha"
     version="1.1"
     style="border:solid 2px #000">
-    itle>SVGCaptcha</title>
+    <title>SVGCaptcha</title>
     <g>
     <path
         style="fill:none;stroke:#000000;stroke-width:2px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1"
